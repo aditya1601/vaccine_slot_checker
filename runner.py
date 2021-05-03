@@ -34,7 +34,7 @@ def get_data():
     num_adult = 0
 
     for data in all_json:
-        if "centers" in data.keys():
+        if data and "centers" in data.keys():
             for center in data["centers"]:
                 if "sessions" in center:
                     for session in center["sessions"]:
