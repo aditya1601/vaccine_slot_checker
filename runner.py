@@ -45,7 +45,7 @@ def get_data():
                             else:
                                 num_adult += 1
 
-    logger.info(f"Total {num_adult + num_young} centers : {num_young} (18+) and {num_adult} (45+)")
+    logger.debug(f"Available in {num_adult + num_young} centers : {num_young} (18+) and {num_adult} (45+)")
 
     return centers
 
@@ -56,14 +56,15 @@ def fetch_center_details():
 
     if centers:
         for center in centers:
-            slots = center["sessions"][0]["available_capacity"]
-            total_slots += slots
-            fee = center["fee_type"]
-            name = center["name"]
-            date = center["sessions"][0]["date"]
-            logger.info(f"############[{fee}] {slots} slots on {date} in {name}")
+            for session in center["sessions"]:
+                slots = session["available_capacity"]
+                total_slots += slots
+                fee = center["fee_type"]
+                name = center["name"]
+                date = session["date"]
+                logger.info(f"############[{fee}] {slots} slots on {date} in {name}")
     else:
-        logger.info("No slot found.")
+        logger.info("No 18+ slots found.")
 
     return total_slots
 
