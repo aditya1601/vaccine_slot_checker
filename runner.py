@@ -4,14 +4,25 @@ import config
 from utils import logger, play_sound
 import time
 
+headers_dict ={
+    'dnt': '1',
+    'origin': 'https://www.cowin.gov.in',
+    'referer': 'https://www.cowin.gov.in/',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'cross-site',
+    'user-agent': 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1'
+}
 
 def get_json(loc_id, date):
     url = config.URL_TEMPLATE.format(loc_id, date)
-    resp = requests.get(url)
+    resp = requests.get(url, headers=headers_dict)
     if resp.status_code == 200:
         return resp.json()
     else:
         logger.error("######## URL FAILED!! #########")
+        logger.error(resp.status_code)
+        logger.error(resp.text)
         return None
 
 
