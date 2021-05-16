@@ -1,18 +1,22 @@
 import logging
+from logging.handlers import RotatingFileHandler
 import config
 from playsound import playsound
+
 
 global logger
 logger = logging.getLogger()
 logger.handlers.clear()
 consoleHandler = logging.StreamHandler()
-formatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s] [%(filename)s] %(message)s")
+logFileHandler = RotatingFileHandler("logs/logs.txt", maxBytes=1024)
+formatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s] %(message)s")
 consoleHandler.setFormatter(formatter)
+logFileHandler.setFormatter(formatter)
 logger.setLevel(config.LOGGING_LEVEL)
-if not logger.handlers:
-    logger.addHandler(consoleHandler)
+logger.addHandler(consoleHandler)
+logger.addHandler(logFileHandler)
 
 
 def play_sound():
-    for i in range(config.NUM_TIMES_NOTIFY):
+    for i in range(3):
         playsound("notify.mp3")
